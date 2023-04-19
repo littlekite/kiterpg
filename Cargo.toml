@@ -1,0 +1,13 @@
+[package]
+name = "kite"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rand = "0.8.5"
+bevy = "0.10.1"
+bevy_egui = "0.20.2"
+bevy-inspector-egui = "0.18.3"
+bevy_asset_loader = "0.16.0"
