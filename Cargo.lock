@@ -464,6 +464,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_common_assets"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "291aeda7599bf12869ff225c3702a8b8810c7e5d40655271d0b38442253ca03d"
+dependencies = [
+ "anyhow",
+ "bevy",
+ "ron",
+ "serde",
+]
+
+[[package]]
 name = "bevy_core"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2105,8 +2117,11 @@ dependencies = [
  "bevy",
  "bevy-inspector-egui",
  "bevy_asset_loader",
+ "bevy_common_assets",
  "bevy_egui",
  "rand",
+ "ron",
+ "serde",
 ]
 
 [[package]]
@@ -3089,9 +3104,9 @@ dependencies = [
 
 [[package]]
 name = "taffy"
-version = "0.3.11"
+version = "0.3.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fab62c50c3d17993e7f0c72932e51ceeac5ec2b51c225fda8529d606159c99d8"
+checksum = "3540ec65df399929a04a485feb50144475735920cc47eaf8eba09c70b1df4055"
 dependencies = [
  "arrayvec",
  "num-traits",

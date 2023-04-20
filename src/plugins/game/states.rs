@@ -12,6 +12,7 @@ pub enum GameState {
     Paused,
     GameOver,
     GameWon,
+    Combat
 }
 
 #[derive(Clone, Eq, PartialEq, Debug, Copy, Hash, Default, States, Reflect)]
@@ -28,4 +29,15 @@ pub enum StoryState {
     FirstVisit,
     MiddleGame,
     Win,
+}
+
+#[derive(Clone, Eq, PartialEq, Debug, Copy, Hash, Default, States, Reflect)]
+pub enum OwState {
+    #[default]
+    LoadingRoom,
+    RestoreRoom,
+    FreeRoam,
+    CombatStarting,
+    Dialog,
+    NotInOverworld,
 }

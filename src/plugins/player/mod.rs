@@ -11,6 +11,7 @@ use crate::states::AppState;
 use self::systems::{
     animation::player_animation,
     movement::{player_movement, player_movement_input, player_movement_reset},
+    fight::{player_fight}
 };
 
 use super::game::states::GameState;
@@ -30,6 +31,7 @@ impl Plugin for PlayerPlugin {
                     player_movement_input.before(player_movement),
                     player_movement,
                     player_animation,
+                    player_fight
                 )
                     .in_set(OnUpdate(AppState::InGame))
                     .distributive_run_if(in_state(GameState::Running)),

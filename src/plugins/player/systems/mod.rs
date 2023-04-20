@@ -4,3 +4,4 @@
 // https://opensource.org/licenses/MIT
 pub mod animation;
 pub mod movement;
+pub mod fight;

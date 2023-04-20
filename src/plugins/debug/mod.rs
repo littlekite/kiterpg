@@ -10,6 +10,11 @@ use bevy_inspector_egui::{prelude::*, bevy_inspector, DefaultInspectorConfigPlug
 use crate::states::AppState;
 use bevy_egui::*;
 
+use crate::plugins::{
+    overworld::states::OverworldState,
+    game::states::GameState
+};
+
 use bevy::prelude::*;
 use egui::containers::Frame;
 pub struct DebugPlugin;
@@ -18,7 +23,9 @@ impl Plugin for DebugPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
         #[cfg(debug_assertions)]
         app.add_plugin(WorldInspectorPlugin::new())
-            .add_plugin(StateInspectorPlugin::<AppState>::default());
+            .add_plugin(StateInspectorPlugin::<AppState>::default())
+            .add_plugin(StateInspectorPlugin::<GameState>::default())
+            .add_plugin(StateInspectorPlugin::<OverworldState>::default());
     }
 }
 

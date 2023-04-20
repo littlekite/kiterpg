@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 use crate::states::AppState;
 use bevy::prelude::{
-    in_state, App, IntoSystemAppConfig, IntoSystemConfig, OnEnter, OnUpdate, Plugin,
+    in_state, App, States,IntoSystemAppConfig, IntoSystemConfig, OnEnter, OnUpdate, Plugin,
 };
 pub mod states;
 mod systems;
@@ -19,8 +19,9 @@ use super::{
     tilemap::TilemapPlugin,
     overworld::OverworldPlugin,
     player::PlayerPlugin,
+    combat::CombatPlugin
+    //enemy::EnemyPlugin,
 };
-
 
 pub struct GamePlugin;
 impl Plugin for GamePlugin {
@@ -32,6 +33,8 @@ impl Plugin for GamePlugin {
         .add_plugin(TilemapPlugin)
         .add_plugin(OverworldPlugin)
         .add_plugin(PlayerPlugin)
+        .add_plugin(CombatPlugin)
+        //.add_plugin(EnemyPlugin)
         .add_plugin(AnimationPlugin)
         .add_system(game_setup.in_schedule(OnEnter(AppState::InGame)));
     }

@@ -12,7 +12,7 @@ pub fn update_game_camera(
     mut game_camera_query: Query<(&mut Transform, &GameCameraState), With<GameCamera>>,
     player_query: Query<&Transform, (With<Player>, Without<GameCamera>)>,
 ) {
-    println!("ccccc");
+
     if game_camera_query.is_empty() || player_query.is_empty() {
         return;
     }
@@ -20,7 +20,6 @@ pub fn update_game_camera(
     let (mut game_camera_transform, game_camera_state) = game_camera_query
         .get_single_mut()
         .expect("0 or more than 1 game-camera found.");
-    println!("{:?}",game_camera_state);
     match *game_camera_state {
         GameCameraState::Static => return,
         GameCameraState::FollowPlayer => {
@@ -28,7 +27,7 @@ pub fn update_game_camera(
                 .get_single()
                 .expect("0 or more than 1 player found.");
             
-            println!("{:?}",player_transform.translation.x);
+            //println!("{:?}",player_transform.translation.x);
             let left = 110.0;
             let right = 112.0;
             let bottom = 72.111;
