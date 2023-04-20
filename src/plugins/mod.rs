@@ -10,3 +10,5 @@ pub mod intro;
 pub mod camera;
 pub mod overworld;
 pub mod tilemap;
+pub mod player;
+pub mod animation;

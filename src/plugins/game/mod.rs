@@ -13,9 +13,12 @@ use self::{
 };
 
 use super::{
+    animation::AnimationPlugin,
     debug::DebugPlugin,
+    camera::CameraPlugin,
     tilemap::TilemapPlugin,
-    overworld::OverworldPlugin
+    overworld::OverworldPlugin,
+    player::PlayerPlugin,
 };
 
 
@@ -25,8 +28,11 @@ impl Plugin for GamePlugin {
         app.add_state::<GameState>()
         .add_state::<LevelState>()
         .add_plugin(DebugPlugin)
+        .add_plugin(CameraPlugin)
         .add_plugin(TilemapPlugin)
         .add_plugin(OverworldPlugin)
+        .add_plugin(PlayerPlugin)
+        .add_plugin(AnimationPlugin)
         .add_system(game_setup.in_schedule(OnEnter(AppState::InGame)));
     }
 }

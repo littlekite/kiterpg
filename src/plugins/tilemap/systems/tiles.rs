@@ -36,7 +36,7 @@ pub fn spawn_tiles(
         tilemap_tile_color,
     ) in tilemap_query.iter()
     {
-        println!("aaa");
+        println!("bbb");
         for y in 0..tilemap_size.0.y {
             for x in 0..tilemap_size.0.x {
                 let texture_index = tilemap_texture_indices

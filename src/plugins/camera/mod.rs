@@ -5,15 +5,21 @@
 use bevy::prelude::{in_state, IntoSystemConfig, OnUpdate, Plugin};
 
 use crate::states::AppState;
+use super::game::states::GameState;
 
-
+use self::systems::update_game_camera;
 pub mod bundles;
 pub mod components;
+pub mod systems;
 
 pub struct CameraPlugin;
 
 impl Plugin for CameraPlugin {
     fn build(&self, app: &mut bevy::prelude::App) {
-      
+        app.add_system(
+            update_game_camera
+                .in_set(OnUpdate(AppState::InGame))
+                .run_if(in_state(GameState::Running)),
+        );
     }
 }

@@ -2,24 +2,28 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-use bevy::prelude::{in_state, App, IntoSystemConfigs, OnUpdate, Plugin};
+use bevy::prelude::*;
 
 use crate::states::AppState;
 
-use self::systems::{tiles::spawn_tiles,colliders::spawn_colliders};
+use self::{
+    events::AnimationStartEvent,
+    systems::{handle_animation_start_event, update_active_animation_clips},
+};
 
 use super::game::states::GameState;
 
 pub mod bundles;
 pub mod components;
+pub mod events;
 pub mod systems;
 
-pub struct TilemapPlugin;
+pub struct AnimationPlugin;
 
-impl Plugin for TilemapPlugin {
+impl Plugin for AnimationPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            (spawn_tiles, spawn_colliders)
+        app.add_event::<AnimationStartEvent>().add_systems(
+            (update_active_animation_clips, handle_animation_start_event)
                 .in_set(OnUpdate(AppState::InGame))
                 .distributive_run_if(in_state(GameState::Running)),
         );
