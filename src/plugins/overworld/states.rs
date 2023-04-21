@@ -5,4 +5,5 @@ pub enum OverworldState {
     #[default]
     LoadingRoom,
     CombatStarting,
+    NotInOverworld
 }

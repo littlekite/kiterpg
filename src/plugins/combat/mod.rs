@@ -8,13 +8,16 @@ pub use bevy_common_assets::ron::RonAssetPlugin;
 mod states;
 use crate::plugins::{
     overworld::states::OverworldState,
-    overworld::{CombatDescriptor,CombatStartTag}
+    overworld::{CombatDescriptor,CombatStartTag},
+    game::states::GameState
 };
 
 mod systems;
+pub mod components;
+
 use self::{
     states::CombatState,
-    systems::start_combat
+    systems::{start_combat,spawn_combat}
 };
 
 pub struct CombatPlugin;
@@ -22,7 +25,8 @@ pub struct CombatPlugin;
 impl Plugin for CombatPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugin(RonAssetPlugin::<CombatDescriptor>::new(&["combat.ron"]))
-            .add_system(start_combat.in_set(OnUpdate(OverworldState::CombatStarting)));
+            .add_system(start_combat.in_set(OnUpdate(OverworldState::CombatStarting)))
+            .add_system(spawn_combat.in_schedule(OnEnter(GameState::Combat)));
     }
 }
 
