@@ -12,21 +12,27 @@ use bevy::prelude::*;
 use crate::plugins::{
     game::states::{GameState},
     overworld::states::OverworldState,
-    overworld::{CombatDescriptor,CombatStartTag}
+    overworld::{CombatDescriptor,CombatStartTag},
+    fade::components::Fadeout
 };
 
-use super::components::{CombatEntity};
+use super::components::{CombatEntity,CombatFadeout};
+
 
 pub fn start_combat(
-
+    fadeout: Query<(&Fadeout, &CombatFadeout)>,
     combat_descriptor: Query<(Entity, &Handle<CombatDescriptor>), With<CombatStartTag>>,
     mut overworld_state: ResMut<NextState<OverworldState>>,
     mut game_state: ResMut<NextState<GameState>>,
 
 ) {
     //Check that fade completes
-    overworld_state.set(OverworldState::NotInOverworld);
-    game_state.set(GameState::Combat);
+    if let Ok((fadeout, _)) = fadeout.get_single() {
+        if fadeout.fade_in_just_finished {
+            overworld_state.set(OverworldState::NotInOverworld);
+            game_state.set(GameState::Combat);
+        }
+    }
      
 }
 

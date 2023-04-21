@@ -12,6 +12,9 @@ use self::{
     states::{GameState, LevelState}, systems::game_setup
 };
 
+use crate::plugins::{
+    fade::components::Fadeout
+};
 use super::{
     animation::AnimationPlugin,
     debug::DebugPlugin,
@@ -19,7 +22,8 @@ use super::{
     tilemap::TilemapPlugin,
     overworld::OverworldPlugin,
     player::PlayerPlugin,
-    combat::CombatPlugin
+    combat::CombatPlugin,
+    fade::FadeInPlugin
     //enemy::EnemyPlugin,
 };
 
@@ -35,6 +39,8 @@ impl Plugin for GamePlugin {
         .add_plugin(PlayerPlugin)
         .add_plugin(CombatPlugin)
         //.add_plugin(EnemyPlugin)
+        .add_plugin(FadeInPlugin)
+        .register_type::<Fadeout>()
         .add_plugin(AnimationPlugin)
         .add_system(game_setup.in_schedule(OnEnter(AppState::InGame)));
     }

@@ -20,12 +20,14 @@ use self::{
     systems::{start_combat,spawn_combat}
 };
 
+
 pub struct CombatPlugin;
 
 impl Plugin for CombatPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugin(RonAssetPlugin::<CombatDescriptor>::new(&["combat.ron"]))
             .add_system(start_combat.in_set(OnUpdate(OverworldState::CombatStarting)))
+
             .add_system(spawn_combat.in_schedule(OnEnter(GameState::Combat)));
     }
 }
