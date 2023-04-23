@@ -4,6 +4,7 @@ use bevy::{prelude::States, reflect::Reflect};
 pub enum OverworldState {
     #[default]
     LoadingRoom,
+    RestoreRoom,
     CombatStarting,
     NotInOverworld
 }

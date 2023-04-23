@@ -25,7 +25,7 @@ pub fn spawn_colliders(
     for (tile_transform, tile_sprite) in added_tiles_query.iter() {
         let (mut tilemap_colliders, tilemap_solid_indices, tilemap_tile_size) = tilemap_query
             .get_single_mut()
-            .expect("0 or more than 1 tilemap found.");
+            .expect("0 or more than 1 tilemap111 found.");
 
         let tile_texture_index = tile_sprite.index as u32;
         if tilemap_solid_indices

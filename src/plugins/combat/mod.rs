@@ -5,7 +5,7 @@ use bevy::prelude::*;
 use bevy::prelude::{in_state, IntoSystemConfig, OnUpdate, Plugin};
 pub use bevy_common_assets::ron::RonAssetPlugin;
 
-mod states;
+
 use crate::plugins::{
     overworld::states::OverworldState,
     overworld::{CombatDescriptor,CombatStartTag},
@@ -14,10 +14,11 @@ use crate::plugins::{
 
 mod systems;
 pub mod components;
+pub mod states;
 
 use self::{
     states::CombatState,
-    systems::{start_combat,spawn_combat}
+    systems::{start_combat,spawn_combat,test_combat_end,transition_to_overworld}
 };
 
 
@@ -25,9 +26,11 @@ pub struct CombatPlugin;
 
 impl Plugin for CombatPlugin {
     fn build(&self, app: &mut App) {
-        app.add_plugin(RonAssetPlugin::<CombatDescriptor>::new(&["combat.ron"]))
+        app.add_state::<CombatState>()
+            .add_plugin(RonAssetPlugin::<CombatDescriptor>::new(&["combat.ron"]))
             .add_system(start_combat.in_set(OnUpdate(OverworldState::CombatStarting)))
-
+            .add_system(test_combat_end)
+            .add_system(transition_to_overworld)
             .add_system(spawn_combat.in_schedule(OnEnter(GameState::Combat)));
     }
 }

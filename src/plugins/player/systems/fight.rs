@@ -14,11 +14,12 @@ use crate::plugins::{
     },
     tilemap::components::TilemapColliders,
     overworld::states::OverworldState,
+    combat::states::CombatState,
     fade::systems::spawn_fadeout,
     combat::components::CombatFadeout
 };
 
-
+use crate::states::AppState;
 
 
 
@@ -27,6 +28,8 @@ pub fn player_fight(
     keyboard: Res<Input<KeyCode>>,
     mut query: Query<(&mut PlayerState, &mut PlayerDirection), With<Player>>,
     mut overworld_state: ResMut<NextState<OverworldState>>,
+    mut appstate: ResMut<NextState<AppState>>,
+    mut combat_state: ResMut<NextState<CombatState>>
 ) {
         if query.is_empty() {
             return;
@@ -40,8 +43,15 @@ pub fn player_fight(
         if keyboard.just_pressed(KeyCode::L) {
             //状态更改
             overworld_state.set(OverworldState::CombatStarting);
+            
             let fadeout = spawn_fadeout(&mut commands);
             commands.entity(fadeout).insert(CombatFadeout);
+            
+            appstate.set(AppState::Combat);
         }
+        if keyboard.just_pressed(KeyCode::P) {
+            combat_state.set(CombatState::PlayerWins);
+        }
+       
     
 }

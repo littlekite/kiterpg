@@ -12,7 +12,8 @@ use bevy_egui::*;
 
 use crate::plugins::{
     overworld::states::OverworldState,
-    game::states::GameState
+    game::states::GameState,
+    combat::states::CombatState
 };
 
 use bevy::prelude::*;
@@ -25,7 +26,8 @@ impl Plugin for DebugPlugin {
         app.add_plugin(WorldInspectorPlugin::new())
             .add_plugin(StateInspectorPlugin::<AppState>::default())
             .add_plugin(StateInspectorPlugin::<GameState>::default())
-            .add_plugin(StateInspectorPlugin::<OverworldState>::default());
+            .add_plugin(StateInspectorPlugin::<OverworldState>::default())
+            .add_plugin(StateInspectorPlugin::<CombatState>::default());
     }
 }
 

@@ -14,6 +14,7 @@ pub fn update_fadeout(
     mut fadeout: Query<(Entity, &mut BackgroundColor, &mut Fadeout)>,
     time: Res<Time>,
 ) {
+    
     for (entity, mut color, mut fadeout) in &mut fadeout {
        
         fadeout.fade_in_just_finished = false;

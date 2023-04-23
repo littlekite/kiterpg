@@ -11,6 +11,7 @@ pub enum AppState {
     BuildingAtlases,
     Introduction,
     InGame,
+    Combat,
     GameOver,
     GameWin,
 }
