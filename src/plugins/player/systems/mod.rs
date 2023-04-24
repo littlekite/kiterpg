@@ -5,3 +5,4 @@
 pub mod animation;
 pub mod movement;
 pub mod fight;
+pub mod position;

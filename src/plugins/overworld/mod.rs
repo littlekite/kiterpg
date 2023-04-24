@@ -25,6 +25,8 @@ use self::{
 pub use bevy_common_assets::ron::RonAssetPlugin;
 
 pub struct OverworldPlugin;
+pub mod resources;
+
 
 impl Plugin for OverworldPlugin {
     fn build(&self, app: &mut App) {
@@ -39,12 +41,7 @@ pub struct RoomDescriptor {
     
 }
 
-#[derive(Resource)]
-pub struct CurrentRoom {
-    pub current_player_translation: Vec3,
-    pub background_image: String
-    //pub npcs: Vec<(String, Vec3)>,
-}
+
 
 #[derive(Component)]
 pub struct CombatStartTag;

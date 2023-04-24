@@ -5,6 +5,7 @@ pub enum OverworldState {
     #[default]
     LoadingRoom,
     RestoreRoom,
+    FreeRoam,
     CombatStarting,
     NotInOverworld
 }

@@ -11,9 +11,12 @@ use crate::states::AppState;
 use self::systems::{
     animation::player_animation,
     movement::{player_movement, player_movement_input, player_movement_reset},
-    fight::{player_fight}
+    fight::{player_fight},
+    position::{player_position}
 };
-
+use crate::plugins::{
+    overworld::states::OverworldState
+};
 use super::game::states::GameState;
 
 pub mod bundles;
@@ -31,10 +34,13 @@ impl Plugin for PlayerPlugin {
                     player_movement_input.before(player_movement),
                     player_movement,
                     player_animation,
-                    player_fight
+                    player_fight,
                 )
                     .in_set(OnUpdate(AppState::InGame))
                     .distributive_run_if(in_state(GameState::Running)),
+                
+            ).add_system(
+                player_position.in_set(OnUpdate(OverworldState::FreeRoam)),
             );
     }
 }

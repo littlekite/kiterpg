@@ -5,7 +5,7 @@
 use bevy::{
     prelude::{
         Added, Camera2d, Commands, DespawnRecursiveExt, Entity, EventWriter, Name, NextState,
-        Query, Res, ResMut, Transform, Vec2, With, Without,
+        Query, Res, ResMut, Transform, Vec2, With, Without,Vec3
     },
     window::Window,
 };
@@ -13,15 +13,23 @@ use bevy::{
 use crate::plugins::{
     atlas::resources::GameAtlases,
     game::states::{GameState, LevelState},
+    overworld::states::OverworldState,
     tilemap::bundles::TilemapBundle,
+    overworld::resources::CurrentRoom
 };
 
 pub fn overworld_setup(
     mut commands: Commands,
     game_atlases: Res<GameAtlases>,
     mut game_state: ResMut<NextState<GameState>>,
+    mut next_state: ResMut<NextState<OverworldState>>
 ) {
     game_state.set(GameState::Running);
+    next_state.set(OverworldState::FreeRoam);
+    let room = CurrentRoom {
+        current_player_translation: Vec3::new(0.0, 0.0, 10.)
+    };
+    commands.insert_resource(room);
 
     commands
         .spawn(TilemapBundle::new(
