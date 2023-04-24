@@ -47,7 +47,7 @@ pub fn player_fight(
             let fadeout = spawn_fadeout(&mut commands);
             commands.entity(fadeout).insert(CombatFadeout);
             
-            appstate.set(AppState::Combat);
+            //appstate.set(AppState::Combat);
         }
         if keyboard.just_pressed(KeyCode::P) {
             combat_state.set(CombatState::PlayerWins);

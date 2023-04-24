@@ -105,21 +105,21 @@ pub fn test_combat_end(
 pub fn transition_to_overworld(
     mut commands: Commands,
     fadeout: Query<&Fadeout, With<VictoryFadeout>>,
-    
-    mut appstate: ResMut<NextState<AppState>>,
+    mut level_state: ResMut<NextState<LevelState>>,
     mut combat_state: ResMut<NextState<CombatState>>,
     mut overworld_state: ResMut<NextState<OverworldState>>,
     query: Query<Entity, Without<Window>>
 ) {
     if let Ok(fadeout) = fadeout.get_single() {
         if fadeout.fade_in_just_finished {
-            println!("z");
+            /*
             for entity in query.iter() {
                 commands.entity(entity).despawn_recursive();
             }
-            appstate.set(AppState::InGame);
+             */
+            //appstate.set(AppState::InGame);
             //next_state.set(GameState::Running);
-            //level_state.set(LevelState::Overworld);
+            level_state.set(LevelState::Overworld);
             combat_state.set(CombatState::NotInCombat);
             //overworld_state.set(OverworldState::RestoreRoom);
         } 
