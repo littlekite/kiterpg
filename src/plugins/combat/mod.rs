@@ -11,6 +11,7 @@ use crate::plugins::{
     overworld::{CombatDescriptor,CombatStartTag},
     game::states::GameState
 };
+use crate::states::AppState;
 
 mod systems;
 pub mod components;
@@ -20,6 +21,9 @@ use self::{
     states::CombatState,
     systems::{start_combat,spawn_combat,test_combat_end,transition_to_overworld}
 };
+
+use super::tilemap::systems::colliders::spawn_colliders;
+use super::tilemap::systems::tiles::spawn_tiles;
 
 
 pub struct CombatPlugin;
@@ -31,6 +35,7 @@ impl Plugin for CombatPlugin {
             .add_system(start_combat.in_set(OnUpdate(OverworldState::CombatStarting)))
             .add_system(test_combat_end)
             .add_system(transition_to_overworld)
+            .add_system(spawn_tiles)
             .add_system(spawn_combat.in_schedule(OnEnter(GameState::Combat)));
     }
 }

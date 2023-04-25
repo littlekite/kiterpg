@@ -14,6 +14,8 @@ use crate::plugins::{
     overworld::states::OverworldState,
     overworld::{CombatDescriptor,CombatStartTag},
     fade::{components::Fadeout, systems::spawn_fadeout},
+    tilemap::bundles::TilemapBundle,
+    atlas::resources::GameAtlases,
     combat::states::CombatState
 };
 
@@ -39,6 +41,7 @@ pub fn start_combat(
 
 pub fn spawn_combat(
     mut commands: Commands,
+    game_atlases: Res<GameAtlases>,
     combat_descriptor: Query<(Entity, &Handle<CombatDescriptor>), With<CombatStartTag>>,
     mut camera: Query<&mut Transform, (With<Camera>)>,
     combats: Res<Assets<CombatDescriptor>>,
@@ -46,43 +49,41 @@ pub fn spawn_combat(
 ) {
 
     let mut camera = camera.single_mut();
-    camera.translation = Vec3::new(0.0, 0.0, 999.0);
+    camera.translation = Vec3::new(112.0, 100.0, 100.0);
     
-    /* 
-    let (entity, combat_desc) = &combat_descriptor.single();
-    commands.entity(*entity).despawn_recursive();
-    // FIXME this is a kinda unsound assumption...
-    let combat_desc = combats
-        .get(combat_desc)
-        .expect("Combat should have loaded by end of fade...");
-    */
-    commands.spawn((
-        SpriteBundle {
-            sprite: Sprite {
-                custom_size: Some(Vec2::new(26.0, 11.0)),
-                ..default()
-            },
-            transform: Transform::from_xyz(0.0, 0.0, 100. - 0.1),
-            texture: assets.load("CaveBackground.png"),
-            ..default()
-        },
-        Name::new("Background"),
-        CombatEntity,
-    ));
+    commands
+        .spawn(TilemapBundle::new(
+            game_atlases.tileset.clone(),
+            (16.0, 16.0).into(),
+            (16, 20).into(),
+            vec![
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+            ],
+            vec![],
+            None,
+        ))
+        .insert(Name::from("fightmap")).insert(CombatEntity);
 
-    commands.spawn((
-        SpriteBundle {
-            sprite: Sprite {
-                custom_size: Some(Vec2::new(11.0, 7.0)),
-                ..default()
-            },
-            transform: Transform::from_xyz(0.0, -1.2, 100.),
-            texture: assets.load("Stage.png"),
-            ..default()
-        },
-        Name::new("Background"),
-        CombatEntity,
-    ));
+
 }
 
 
@@ -108,15 +109,15 @@ pub fn transition_to_overworld(
     mut level_state: ResMut<NextState<LevelState>>,
     mut combat_state: ResMut<NextState<CombatState>>,
     mut overworld_state: ResMut<NextState<OverworldState>>,
-    query: Query<Entity, Without<Window>>
+    query: Query<Entity, With<CombatEntity>>
 ) {
     if let Ok(fadeout) = fadeout.get_single() {
         if fadeout.fade_in_just_finished {
-            /*
+            
             for entity in query.iter() {
                 commands.entity(entity).despawn_recursive();
             }
-             */
+             
             //appstate.set(AppState::InGame);
             //next_state.set(GameState::Running);
             level_state.set(LevelState::Overworld);
