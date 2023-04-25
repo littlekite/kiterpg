@@ -15,3 +15,4 @@ pub mod enemy;
 pub mod animation;
 pub mod combat;
 pub mod fade;
+pub mod gameui;

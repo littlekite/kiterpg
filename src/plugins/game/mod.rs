@@ -23,7 +23,8 @@ use super::{
     overworld::OverworldPlugin,
     player::PlayerPlugin,
     combat::CombatPlugin,
-    fade::FadeInPlugin
+    fade::FadeInPlugin,
+    gameui::GameUiPlugin
     //enemy::EnemyPlugin,
 };
 
@@ -38,6 +39,7 @@ impl Plugin for GamePlugin {
         .add_plugin(OverworldPlugin)
         .add_plugin(PlayerPlugin)
         .add_plugin(CombatPlugin)
+        .add_plugin(GameUiPlugin)
         //.add_plugin(EnemyPlugin)
         .add_plugin(FadeInPlugin)
         .register_type::<Fadeout>()

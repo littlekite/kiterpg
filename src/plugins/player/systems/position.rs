@@ -38,5 +38,5 @@ pub fn player_position(
         }
         let player =  query.single();
         room.current_player_translation = player.translation;
-        println!("{:?}",room.current_player_translation.x);
+        //println!("{:?}",room.current_player_translation.x);
 }
