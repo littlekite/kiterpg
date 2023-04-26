@@ -7,9 +7,16 @@ use bevy::{
     window::{Window, WindowFocused},
 };
 use crate::states::AppState;
-use bevy::prelude::*;
+use bevy::{prelude::*, render::camera};
 
 use crate::plugins::{
+    player::{
+        components::{
+            Player, PlayerDebuffSlowWalk, PlayerDirection, PlayerSize, PlayerVelocity,
+            PlayerWalkSpeed,
+        },
+        states::PlayerState,
+    },
     game::states::{GameState,LevelState},
     overworld::states::OverworldState,
     overworld::{CombatDescriptor,CombatStartTag},
@@ -45,11 +52,23 @@ pub fn spawn_combat(
     combat_descriptor: Query<(Entity, &Handle<CombatDescriptor>), With<CombatStartTag>>,
     mut camera: Query<&mut Transform, (With<Camera>)>,
     combats: Res<Assets<CombatDescriptor>>,
+    mut player: Query<(&mut Transform,&mut PlayerState, &mut PlayerDirection), (With<Player>,Without<Camera>)>,
     assets: Res<AssetServer>,
 ) {
 
     let mut camera = camera.single_mut();
     camera.translation = Vec3::new(112.0, 100.0, 100.0);
+
+    //重置player的位置
+    let (
+        mut player_transform,
+        mut player_state,
+        mut player_direct
+    ) = player
+        .get_single_mut().expect("0 or more than 1 `Player` found.");
+    *player_state = PlayerState::Fight;
+    player_transform.translation = Vec3::new(154.0, 53.0, 10.);
+    *player_direct = PlayerDirection::Left;
     
     commands
         .spawn(TilemapBundle::new(

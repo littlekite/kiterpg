@@ -33,6 +33,7 @@ pub fn player_animation(
     let state_part_clip_name = match player_state {
         PlayerState::Idle => "idle",
         PlayerState::Walk => "walk",
+        PlayerState::Fight => "fight",
         PlayerState::UseMelee => "melee",
         PlayerState::UseMagic => "magic",
         _ => "idle",

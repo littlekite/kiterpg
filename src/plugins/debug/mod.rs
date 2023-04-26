@@ -11,6 +11,9 @@ use crate::states::AppState;
 use bevy_egui::*;
 
 use crate::plugins::{
+    player::{
+        states::PlayerState,
+    },
     overworld::states::OverworldState,
     game::states::GameState,
     combat::states::CombatState

@@ -13,6 +13,7 @@ use self::{
 };
 
 use crate::plugins::{
+    player::states::PlayerState,
     fade::components::Fadeout
 };
 use super::{

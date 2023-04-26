@@ -11,6 +11,7 @@ pub enum PlayerState {
     Idle,
     Walk,
     Talk,
+    Fight,
     Stunned,
     UseMelee,
     UseMagic,

@@ -136,6 +136,12 @@ impl PlayerBundle {
                     playback_speed: 0.2,
                 })
                 .with_clip(&AnimationClip {
+                    name: "fight_left".into(),
+                    index_first: 17,
+                    index_last: 17,
+                    playback_speed: 0.2,
+                })
+                .with_clip(&AnimationClip {
                     name: "melee_up".into(),
                     index_first: 20,
                     index_last: 23,

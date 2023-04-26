@@ -8,7 +8,7 @@ use bevy_asset_loader::prelude::*;
 #[derive(AssetCollection, Resource)]
 pub struct GameAssets {
     // Images.
-    #[asset(path = "images/player.png")]
+    #[asset(path = "images/player_num.png")]
     pub image_player: Handle<Image>,
     #[asset(path = "images/tileset.png")]
     pub image_tileset: Handle<Image>,
