@@ -22,10 +22,30 @@ pub struct AnimationPlugin;
 
 impl Plugin for AnimationPlugin {
     fn build(&self, app: &mut App) {
-        app.add_event::<AnimationStartEvent>().add_systems(
+        app.add_event::<AnimationStartEvent>()
+        /* 
+        .add_systems(
             (update_active_animation_clips, handle_animation_start_event)
                 .in_set(OnUpdate(AppState::InGame))
                 .distributive_run_if(in_state(GameState::Running)),
+        ).add_systems(
+            (update_active_animation_clips, handle_animation_start_event)
+                .in_set(OnUpdate(AppState::InGame))
+                .distributive_run_if(in_state(GameState::Combat)),
         );
+        */
+        .add_systems(
+            (update_active_animation_clips, handle_animation_start_event)
+                .in_set(OnUpdate(AppState::InGame))
+                .distributive_run_if(is_run),
+        );
+     
     }
+}
+
+pub fn is_run(game_state: Res<State<GameState>>) -> bool {
+    if GameState::Running == game_state.0 || GameState::Combat == game_state.0{
+        return true;
+    }
+    false
 }
