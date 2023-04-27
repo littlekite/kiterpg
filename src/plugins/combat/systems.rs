@@ -29,13 +29,30 @@ use crate::plugins::{
 use super::components::{CombatEntity,CombatFadeout, VictoryFadeout};
 
 
+
+pub fn test_combat(
+    mut player: Query<(&mut Transform,&mut PlayerState, &mut PlayerDirection), (With<Player>,Without<Camera>)>,
+){
+
+    let (
+        mut player_transform,
+        mut player_state,
+        mut player_direct
+    ) = player
+        .get_single_mut().expect("0 or more than 1 `Player` found.");
+    println!("{:?}",player_state);
+    println!("{:?}",player_direct)
+}
+
 pub fn start_combat(
     fadeout: Query<(&Fadeout, &CombatFadeout)>,
     combat_descriptor: Query<(Entity, &Handle<CombatDescriptor>), With<CombatStartTag>>,
     mut overworld_state: ResMut<NextState<OverworldState>>,
     mut game_state: ResMut<NextState<GameState>>,
+    
 
 ) {
+    
     //Check that fade completes
     if let Ok((fadeout, _)) = fadeout.get_single() {
         if fadeout.fade_in_just_finished {
@@ -76,26 +93,26 @@ pub fn spawn_combat(
             (16.0, 16.0).into(),
             (16, 20).into(),
             vec![
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
-                vec![4, 4, 4, 4, 4,4,4,4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
+                vec![4, 4, 4, 4, 4, 4, 4, 4,4,4,4, 4, 4, 4, 4, 4],
             ],
             vec![],
             None,
@@ -110,8 +127,10 @@ pub fn test_combat_end(
     mut commands: Commands,
     mut combat_state: ResMut<NextState<CombatState>>, 
     input: Res<Input<KeyCode>>,
+    mut player: Query<(&mut Transform,&mut PlayerState, &mut PlayerDirection), (With<Player>,Without<Camera>)>,
     fadeout: Query<&Fadeout>
 ) {
+   
     if fadeout.iter().count() != 0 {
         return; // Only allow 1 fadeout
     }

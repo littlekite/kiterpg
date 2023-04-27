@@ -9,6 +9,7 @@ pub use bevy_common_assets::ron::RonAssetPlugin;
 use crate::plugins::{
     overworld::states::OverworldState,
     overworld::{CombatDescriptor,CombatStartTag},
+    player::systems::animation,
     game::states::GameState
 };
 use crate::states::AppState;
@@ -19,9 +20,10 @@ pub mod states;
 
 use self::{
     states::CombatState,
-    systems::{start_combat,spawn_combat,test_combat_end,transition_to_overworld}
+    systems::{start_combat,spawn_combat,test_combat_end,transition_to_overworld,test_combat}
 };
 
+use super::player::systems::animation::player_animation;
 use super::tilemap::systems::colliders::spawn_colliders;
 use super::tilemap::systems::tiles::spawn_tiles;
 
@@ -36,6 +38,7 @@ impl Plugin for CombatPlugin {
             .add_system(test_combat_end)
             .add_system(transition_to_overworld)
             .add_system(spawn_tiles)
+            .add_system(player_animation.in_set(OnUpdate(OverworldState::NotInOverworld)))
             .add_system(spawn_combat.in_schedule(OnEnter(GameState::Combat)));
     }
 }
