@@ -20,7 +20,7 @@ use crate::plugins::{
 
 pub fn spawner_spawn_enemies(
     mut commands: Commands,
-    mut query: Query<(&mut SpawnerTimer), With<Spawner>>,
+    mut query: Query<&mut SpawnerTimer, With<Spawner>>,
     enemies_query: Query<&Enemy>,
     player_query: Query<&PlayerState>,
     game_atlases: Res<GameAtlases>,

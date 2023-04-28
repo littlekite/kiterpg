@@ -31,11 +31,114 @@ pub struct PlayerHealthUIText;
 
 pub struct GameUiPlugin;
 
+
+#[derive(Component)]
+pub struct Time30;
+
+
+
 impl Plugin for GameUiPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(spawn_header_bar_ui.in_schedule(OnEnter(GameState::Running)));
+        app.add_system(spawn_header_bar_ui.in_schedule(OnEnter(GameState::Running)))
+        .add_system(spawn_time_ui.in_schedule(OnEnter(GameState::Combat)))
+        .add_systems(
+            (update_time_ui,des_time_ui).in_set(OnUpdate(AppState::InGame))
+            .distributive_run_if(in_state(GameState::Combat)),
+        );
+        
     }
 }
+
+#[derive(Component, Clone, Debug, Reflect)]
+pub struct Timeleft30 {
+    pub time_total: f32,
+}
+
+/// Bundle added to a fighter stub, in order to activate it.
+#[derive(Bundle)]
+pub struct TimeBundle {
+    pub timeb: Timeleft30
+}
+
+#[derive(Component)]
+pub struct TimeEntity;
+
+pub fn update_time_ui(
+    time: Res<Time>, 
+    mut query: Query<(&mut Text, &mut Timeleft30)>
+){
+    println!("a");
+    for (mut text, mut timer) in query.iter_mut() {
+        println!("b");
+        // 计时器减少时间
+        timer.time_total -= time.delta_seconds();
+        // 更新文本显示
+        let time_left = timer.time_total.ceil() as i32;
+        text.sections[0].value = format!("{}", time_left);
+    }
+
+}
+
+fn des_time_ui(
+    mut commands: Commands, time: Res<Time>, 
+    mut query: Query<(&mut Text, &mut Timeleft30)>,
+    query_time: Query<Entity, With<TimeEntity>>
+) {
+    // 遍历所有带有 TextTimer 组件的实体
+    for (mut text, mut timer) in query.iter_mut() {
+        timer.time_total -= time.delta_seconds();
+        // 如果计时器耗尽，销毁实体
+        if timer.time_total <= 0.0 {
+            for entity in query_time.iter() {
+                commands.entity(entity).despawn_recursive();
+            }
+        }
+    }
+}
+
+
+pub fn spawn_time_ui(
+    mut commands: Commands, 
+    assets: Res<GameAssets>
+){
+    let parent_node = (
+        NodeBundle {
+            style: Style {
+                size: Size::new(Val::Percent(100.0), Val::Percent(15.0)),
+                align_items: AlignItems::Center,
+                justify_content: JustifyContent::Center,
+                flex_direction: FlexDirection::Row,
+                position_type: PositionType::Absolute,
+                margin: UiRect{
+                    left: Val::Px(0.),
+                    right: Val::Px(0.),
+                    top: Val::Px(10.),
+                    bottom: Val::Px(0.),
+                },
+                ..default()
+            },
+            //background_color: BackgroundColor(Color::WHITE),
+            ..default()
+        },
+        Name::new("JSQUI"),
+    );
+    let health_text = TextBundle::from_section(
+            "30",
+            TextStyle {
+                font: assets.font_bold.clone(),
+                font_size: 150.0,
+                color: Color::GOLD,
+                
+            },
+        )
+        .with_text_alignment(TextAlignment::Center);
+    commands.spawn(parent_node).with_children(|commands| {
+        commands.spawn(health_text).insert(TimeBundle{timeb:Timeleft30 { time_total: 30. }});
+    }).insert(TimeEntity);
+}
+
+
+
 
 pub fn spawn_header_bar_ui(
     mut commands: Commands,
