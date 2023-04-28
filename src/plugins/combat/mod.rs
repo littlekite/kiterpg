@@ -24,6 +24,7 @@ use self::{
 };
 
 use super::player::systems::animation::player_animation;
+use super::spawner::systems::spawn::spawner_spawn_enemies;
 use super::tilemap::systems::colliders::spawn_colliders;
 use super::tilemap::systems::tiles::spawn_tiles;
 
@@ -39,6 +40,10 @@ impl Plugin for CombatPlugin {
             .add_system(transition_to_overworld)
             .add_system(spawn_tiles)
             .add_system(player_animation.in_set(OnUpdate(OverworldState::NotInOverworld)))
+            .add_systems(
+                (spawner_spawn_enemies,).in_set(OnUpdate(AppState::InGame))
+                .distributive_run_if(in_state(GameState::Combat)),
+            )
             .add_system(spawn_combat.in_schedule(OnEnter(GameState::Combat)));
     }
 }

@@ -6,7 +6,7 @@ use bevy::{
     },
     window::{Window, WindowFocused},
 };
-use crate::states::AppState;
+use crate::{states::AppState, plugins::spawner::bundles::SpawnerBundle};
 use bevy::{prelude::*, render::camera};
 
 use crate::plugins::{
@@ -117,7 +117,17 @@ pub fn spawn_combat(
             vec![],
             None,
         ))
-        .insert(Name::from("fightmap")).insert(CombatEntity);
+        .insert(Name::from("FightMap")).insert(CombatEntity);
+
+
+        //add swap
+   
+        commands.spawn(SpawnerBundle::new(
+            "Spawner A",
+            0.3,
+            11.0,
+        )).insert(Name::from("Spawner"));
+        
 
 
 }

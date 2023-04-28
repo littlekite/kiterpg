@@ -39,7 +39,7 @@ pub fn player_animation(
         PlayerState::UseMagic => "magic",
         _ => "idle",
     };
-    println!("{:?}",state_part_clip_name);
+    //println!("{:?}",state_part_clip_name);
     let direction_part_clip_name = match player_direction {
         PlayerDirection::Up | PlayerDirection::UpLeft | PlayerDirection::UpRight => "up",
         PlayerDirection::Down | PlayerDirection::DownLeft | PlayerDirection::DownRight => "down",
@@ -49,7 +49,7 @@ pub fn player_animation(
 
     // Creating the clips name in format: "[state]_[direction]" (e.g: "idle_left", "walk_up")
     let full_clip_name = state_part_clip_name.to_owned() + "_" + direction_part_clip_name;
-    println!("{:?}",full_clip_name);
+    //println!("{:?}",full_clip_name);
     animation_start_event_writer.send(AnimationStartEvent {
         target_entity: player_entity,
         clip_name: full_clip_name.into(),

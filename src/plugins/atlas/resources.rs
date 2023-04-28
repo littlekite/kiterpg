@@ -11,4 +11,5 @@ use bevy::{
 pub struct GameAtlases {
     pub player: Handle<TextureAtlas>,
     pub tileset: Handle<TextureAtlas>,
+    pub enemy: Handle<TextureAtlas>,
 }

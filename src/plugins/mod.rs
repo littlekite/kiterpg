@@ -16,3 +16,4 @@ pub mod animation;
 pub mod combat;
 pub mod fade;
 pub mod gameui;
+pub mod spawner;

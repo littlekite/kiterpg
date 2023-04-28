@@ -32,12 +32,21 @@ pub(super) fn build_atlases(
         None,
         None,
     );
-
+    let texture_atlas_enemy = TextureAtlas::from_grid(
+        game_assets.image_enemy.clone(),
+        Vec2::new(15.0, 16.0),
+        6,
+        2,
+        None,
+        None,
+    );
+   
     commands.insert_resource(GameAtlases {
         player: texture_atlases.add(texture_atlas_player),
         tileset: texture_atlases.add(texture_atlas_tileset),
+        enemy: texture_atlases.add(texture_atlas_enemy),
 
     });
-    println!("aaa");
+
     next_state.set(AppState::Introduction);
 }

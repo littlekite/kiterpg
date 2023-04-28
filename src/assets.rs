@@ -12,6 +12,8 @@ pub struct GameAssets {
     pub image_player: Handle<Image>,
     #[asset(path = "images/tileset.png")]
     pub image_tileset: Handle<Image>,
+    #[asset(path = "images/enemy.png")]
+    pub image_enemy: Handle<Image>,
 
 
     // Fonts.
