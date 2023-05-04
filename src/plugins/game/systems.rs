@@ -5,9 +5,9 @@
 use bevy::{
     prelude::{
         Commands, DespawnRecursiveExt, Entity, EventReader, Name, Input, KeyCode, NextState, Query, Res,
-        ResMut, Vec2,Vec3, Without,
+        ResMut, Vec2,Vec3, Without, AssetServer, Assets, Resource, Handle,
     },
-    window::{Window, WindowFocused},
+    window::{Window, WindowFocused}, sprite::{TextureAtlas, TextureAtlasSprite}, utils::HashMap,
 };
 
 use crate::plugins::{
@@ -15,7 +15,7 @@ use crate::plugins::{
     atlas::resources::GameAtlases,
     player::bundles::PlayerBundle,
     tilemap::bundles::TilemapBundle,
-    overworld::resources::CurrentRoom
+    overworld::resources::CurrentRoom, fight::components::Icon
 };
 
 use super::{
@@ -82,3 +82,44 @@ pub fn game_setup(
     level_state.set(LevelState::Overworld);
 }
 
+#[derive(Resource)]
+pub struct SpriteSheetMaps {
+    icon_atlas: Handle<TextureAtlas>,
+    pub icons: HashMap<Icon, usize>,
+}
+
+pub fn setup_spritesheet_maps(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+){
+    let texture_handle = asset_server.load("input_icons/Tilemap/tilemap.png");
+    let texture_atlas = TextureAtlas::from_grid(
+        texture_handle,
+        Vec2::new(16.0, 16.0),
+        34,
+        24,
+        Some(Vec2::splat(1.0)),
+        None,
+    );
+    let icon_atlas = texture_atlases.add(texture_atlas);
+    let icons = HashMap::from([
+        (Icon::Pointer, 34 * 17),
+        (Icon::KeyE, 19 + 34 * 10),
+    ]);
+    commands.insert_resource(SpriteSheetMaps {
+        icon_atlas,
+        icons
+    });
+}
+
+pub fn update_art(
+    mut icons: Query<
+    (&mut TextureAtlasSprite, &mut Handle<TextureAtlas>, &Icon)>,
+    sprite_sheets: Res<SpriteSheetMaps>,
+){
+    for (mut sprite, mut atlas, icon) in &mut icons {
+        *atlas = sprite_sheets.icon_atlas.clone();
+        sprite.index = sprite_sheets.icons[icon];
+    }
+}

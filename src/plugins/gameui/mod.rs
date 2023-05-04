@@ -67,9 +67,7 @@ pub fn update_time_ui(
     time: Res<Time>, 
     mut query: Query<(&mut Text, &mut Timeleft30)>
 ){
-    println!("a");
     for (mut text, mut timer) in query.iter_mut() {
-        println!("b");
         // 计时器减少时间
         timer.time_total -= time.delta_seconds();
         // 更新文本显示

@@ -49,7 +49,7 @@ pub fn start_combat(
     combat_descriptor: Query<(Entity, &Handle<CombatDescriptor>), With<CombatStartTag>>,
     mut overworld_state: ResMut<NextState<OverworldState>>,
     mut game_state: ResMut<NextState<GameState>>,
-    
+    mut combat_state: ResMut<NextState<CombatState>>,
 
 ) {
     
@@ -58,6 +58,7 @@ pub fn start_combat(
         if fadeout.fade_in_just_finished {
             overworld_state.set(OverworldState::NotInOverworld);
             game_state.set(GameState::Combat);
+            combat_state.set(CombatState::PlayerSelecting);
         }
     }
      
@@ -74,7 +75,7 @@ pub fn spawn_combat(
 ) {
 
     let mut camera = camera.single_mut();
-    camera.translation = Vec3::new(112.0, 100.0, 100.0);
+    camera.translation = Vec3::new(112.0, 100.0, 999.0);
 
     //重置player的位置
     let (

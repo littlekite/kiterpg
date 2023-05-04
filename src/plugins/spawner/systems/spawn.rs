@@ -40,10 +40,10 @@ pub fn spawner_spawn_enemies(
     }
 
     for mut spawner_timer in query.iter_mut() {
-        println!("snwap enemy");
+       // println!("snwap enemy");
         spawner_timer.0.tick(delta.delta());
         if spawner_timer.0.just_finished() {
-            println!("{:?}",enemies_query.iter().count());
+            //println!("{:?}",enemies_query.iter().count());
             let enemy_count = enemies_query.iter().count();
             match enemy_count {
                 0..=2 => {

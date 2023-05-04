@@ -4,12 +4,12 @@
 // https://opensource.org/licenses/MIT
 use crate::states::AppState;
 use bevy::prelude::{
-    in_state, App, States,IntoSystemAppConfig, IntoSystemConfig, OnEnter, OnUpdate, Plugin,
+    in_state, App, States,IntoSystemAppConfig, IntoSystemConfig, OnEnter, OnUpdate, Plugin, StartupSet,
 };
 pub mod states;
 mod systems;
 use self::{
-    states::{GameState, LevelState}, systems::game_setup
+    states::{GameState, LevelState}, systems::{game_setup, setup_spritesheet_maps, update_art}
 };
 
 use crate::plugins::{
@@ -25,7 +25,7 @@ use super::{
     player::PlayerPlugin,
     combat::CombatPlugin,
     fade::FadeInPlugin,
-    gameui::GameUiPlugin
+    gameui::GameUiPlugin, fight::components::Icon
     //enemy::EnemyPlugin,
 };
 
@@ -44,7 +44,10 @@ impl Plugin for GamePlugin {
         //.add_plugin(EnemyPlugin)
         .add_plugin(FadeInPlugin)
         .register_type::<Fadeout>()
+        .register_type::<Icon>()
         .add_plugin(AnimationPlugin)
+        .add_startup_system(setup_spritesheet_maps.in_base_set(StartupSet::PreStartup))
+        .add_system(update_art)
         .add_system(game_setup.in_schedule(OnEnter(AppState::InGame)));
     }
 }

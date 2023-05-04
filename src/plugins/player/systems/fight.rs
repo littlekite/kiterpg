@@ -16,7 +16,7 @@ use crate::plugins::{
     overworld::states::OverworldState,
     combat::states::CombatState,
     fade::systems::spawn_fadeout,
-    combat::components::CombatFadeout
+    combat::components::CombatFadeout, enemy::components::Enemy
 };
 
 use crate::states::AppState;
@@ -29,6 +29,7 @@ pub fn player_fight(
     mut query: Query<(&mut PlayerState, &mut PlayerDirection), With<Player>>,
     mut overworld_state: ResMut<NextState<OverworldState>>,
     mut appstate: ResMut<NextState<AppState>>,
+    mut enemy:Query<(Entity, &mut Transform), With<Enemy>>,
     mut combat_state: ResMut<NextState<CombatState>>
 ) {
         if query.is_empty() {
@@ -49,9 +50,18 @@ pub fn player_fight(
             
             //appstate.set(AppState::Combat);
         }
-        if keyboard.just_pressed(KeyCode::P) {
-            combat_state.set(CombatState::PlayerWins);
+
+
+        if keyboard.just_pressed(KeyCode::A) {
+            //随机选取enemy进行物理攻击
+            println!("A is pressed!");
+            /*
+            for (ent,tran) in &mut enemy{
+                    println!("{:?}",ent.index())
+            }
+            */     
         }
+
        
     
 }
