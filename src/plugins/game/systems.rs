@@ -15,7 +15,7 @@ use crate::plugins::{
     atlas::resources::GameAtlases,
     player::bundles::PlayerBundle,
     tilemap::bundles::TilemapBundle,
-    overworld::resources::CurrentRoom, fight::components::Icon
+    overworld::resources::CurrentRoom, fight::{components::Icon, Weapon}
 };
 
 use super::{
@@ -86,6 +86,7 @@ pub fn game_setup(
 pub struct SpriteSheetMaps {
     icon_atlas: Handle<TextureAtlas>,
     pub icons: HashMap<Icon, usize>,
+    pub weapons: HashMap<Weapon, usize>,
 }
 
 pub fn setup_spritesheet_maps(
@@ -102,24 +103,34 @@ pub fn setup_spritesheet_maps(
         Some(Vec2::splat(1.0)),
         None,
     );
+    
     let icon_atlas = texture_atlases.add(texture_atlas);
     let icons = HashMap::from([
         (Icon::Pointer, 34 * 17),
         (Icon::KeyE, 19 + 34 * 10),
     ]);
+    let weapons = HashMap::from([(Weapon::BasicStaffOrange, 42), (Weapon::BasicSpear, 47)]);
+
     commands.insert_resource(SpriteSheetMaps {
         icon_atlas,
+        weapons,
         icons
     });
 }
 
 pub fn update_art(
     mut icons: Query<
-    (&mut TextureAtlasSprite, &mut Handle<TextureAtlas>, &Icon)>,
+    (&mut TextureAtlasSprite, &mut Handle<TextureAtlas>, &Icon),Without<Weapon>>,
+    mut weapons: Query<
+    (&mut TextureAtlasSprite, &mut Handle<TextureAtlas>, &Weapon),Without<Icon>>,
     sprite_sheets: Res<SpriteSheetMaps>,
 ){
     for (mut sprite, mut atlas, icon) in &mut icons {
         *atlas = sprite_sheets.icon_atlas.clone();
         sprite.index = sprite_sheets.icons[icon];
+    }
+    for (mut sprite, mut atlas, weapon) in &mut weapons {
+        *atlas = sprite_sheets.icon_atlas.clone();
+        sprite.index = sprite_sheets.weapons[weapon];
     }
 }

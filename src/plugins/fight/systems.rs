@@ -26,7 +26,7 @@ use crate::plugins::{
     combat::states::CombatState
 };
 
-use super::{components::Icon, IconBundle, CurrentSelectedMenuItem, SelectionIcon};
+use super::{components::Icon, IconBundle, CurrentSelectedMenuItem, SelectionIcon, WeaponBundle, Weapon, WeaponIcon};
 
 
 
@@ -61,6 +61,24 @@ pub fn textfun(
 }
 
 pub fn spawn_player_attack_icons(mut commands: Commands) {
+    
+    commands.spawn((
+        WeaponBundle::new(Vec2::new(188.0, 70.0), Weapon::BasicSpear, Vec2::splat(0.75)),
+        WeaponIcon(0),
+        Name::new("SpearIcon"),
+    ));
+
+    commands.spawn((
+        WeaponBundle::new(
+            Vec2::new(205.0, 70.0),
+            Weapon::BasicStaffOrange,
+            Vec2::splat(0.75),
+        ),
+        WeaponIcon(1),
+        Name::new("StaffIcon"),
+    ));
+
+
     commands.spawn((
         IconBundle::new(Vec2::new(188.0, 60.0), Icon::Pointer, Vec2::splat(0.5)),
         CurrentSelectedMenuItem {

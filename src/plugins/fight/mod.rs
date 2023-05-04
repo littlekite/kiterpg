@@ -76,6 +76,56 @@ pub struct CurrentSelectedMenuItem {
 #[derive(Component, Reflect)]
 pub struct SelectionIcon;
 
+//XXX where does weapon declaration belong
+#[derive(Component, Clone, PartialEq, Eq, Hash, Default, Reflect)]
+pub enum Weapon {
+    #[default]
+    BasicStaffOrange,
+    BasicSpear,
+}
+
+#[derive(Bundle)]
+pub struct WeaponBundle {
+    #[bundle]
+    sprite_sheet: SpriteSheetBundle,
+    weapon: Weapon,
+}
+
+impl Default for WeaponBundle {
+    fn default() -> Self {
+        Self {
+            sprite_sheet: SpriteSheetBundle {
+                sprite: TextureAtlasSprite {
+                    custom_size: Some(Vec2::splat(1.0)),
+                    ..default()
+                },
+                transform: Transform::from_translation(Vec3::new(0.0, 0.0, 850.)),
+                ..Default::default()
+            },
+            weapon: Weapon::BasicSpear,
+        }
+    }
+}
+
+impl WeaponBundle {
+    pub fn new(position: Vec2, weapon: Weapon, scale: Vec2) -> Self {
+        let mut bundle = WeaponBundle {
+            weapon,
+            ..default()
+        };
+
+        bundle.sprite_sheet.transform.translation = position.extend(850.);
+        bundle.sprite_sheet.transform.scale = Vec3::new(10., 10., 1.);
+
+        bundle
+    }
+}
+
+#[derive(Component, Reflect)]
+pub struct WeaponIcon(pub i32);
+
+
+
 impl Plugin for FightPlugin {
     fn build(&self, app: &mut App) {
         app.add_system(
