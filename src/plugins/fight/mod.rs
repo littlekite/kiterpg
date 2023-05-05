@@ -24,6 +24,7 @@ use crate::{
 
 pub mod systems;
 use self::components::Icon;
+use self::systems::{player_select_attack, update_icon_location};
 use self::{
     systems::{textfun,spawn_player_attack_icons}
 };
@@ -133,6 +134,9 @@ impl Plugin for FightPlugin {
         ).add_systems(
             (textfun,).in_set(OnUpdate(AppState::InGame))
             .distributive_run_if(in_state(GameState::Combat))
+        ).add_systems(
+            (player_select_attack,update_icon_location)
+                .in_set(OnUpdate(CombatState::PlayerSelecting)),
         );
     }
 }

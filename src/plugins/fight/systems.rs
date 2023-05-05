@@ -89,3 +89,32 @@ pub fn spawn_player_attack_icons(mut commands: Commands) {
         Name::new("SelectionIcon"),
     ));
 }
+
+
+pub fn player_select_attack(
+    mut selection: Query<&mut CurrentSelectedMenuItem, With<SelectionIcon>>,
+    keyboard: Res<Input<KeyCode>>,
+    mut next_state: ResMut<NextState<CombatState>>,
+) {
+    for mut selection in &mut selection {
+        if keyboard.just_pressed(KeyCode::A) {
+            selection.selection -= 1;
+        }
+        if keyboard.just_pressed(KeyCode::D) {
+            selection.selection += 1;
+        }
+        if keyboard.just_pressed(KeyCode::Space) {
+            info!("Attack Selected");
+            next_state.set(CombatState::PlayerAttacking);
+        }
+    }
+}
+
+pub fn update_icon_location(
+    mut selection: Query<(&mut Transform, &CurrentSelectedMenuItem), With<SelectionIcon>>,
+) {
+    for (mut transform, selection) in &mut selection {
+        let location = (selection.selection.rem_euclid(selection.slots)) as f32;
+        transform.translation = Vec3::new(188.0 + location*18., 60.0, 850.);
+    }
+}
