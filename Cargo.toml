@@ -13,4 +13,5 @@ bevy-inspector-egui = "0.18.3"
 bevy_asset_loader = "0.16.0"
 ron = "0.8.0"
 serde = "1.0.136"
+bevy_easings = "0.10"
 bevy_common_assets = { version = "0.6", features = ["ron"] }

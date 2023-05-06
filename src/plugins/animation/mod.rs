@@ -8,10 +8,10 @@ use crate::states::AppState;
 
 use self::{
     events::AnimationStartEvent,
-    systems::{handle_animation_start_event, update_active_animation_clips},
+    systems::{handle_animation_start_event, update_active_animation_clips, animate_melee},
 };
 
-use super::game::states::GameState;
+use super::{game::states::GameState, combat::states::CombatState};
 
 pub mod bundles;
 pub mod components;
@@ -38,6 +38,9 @@ impl Plugin for AnimationPlugin {
             (update_active_animation_clips, handle_animation_start_event)
                 .in_set(OnUpdate(AppState::InGame))
                 .distributive_run_if(is_run),
+        ).add_system(
+            animate_melee
+                .in_set(OnUpdate(CombatState::PlayerAttacking)),
         );
      
     }

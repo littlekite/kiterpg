@@ -16,7 +16,7 @@ use crate::plugins::{
 use super::{
     components::{
         Enemy, EnemyChangeDirectionTimer, EnemyDamage, EnemyDeathTimer, EnemyDirection,
-        EnemyHealth, EnemyHealthMax, EnemyIsStunnedTimer, EnemySize, EnemyType, EnemyWalkSpeed,
+        EnemyHealth, EnemyHealthMax, EnemyIsStunnedTimer, EnemySize, EnemyType, EnemyWalkSpeed, Enemyslot,
     },
     states::EnemyState,
 };
@@ -25,6 +25,7 @@ use super::{
 pub struct EnemyBundle {
     tag: Enemy,
     size: EnemySize,
+    slot:Enemyslot,
     direction_timer: EnemyChangeDirectionTimer,
     stunned_timer: EnemyIsStunnedTimer,
     death_timer: EnemyDeathTimer,
@@ -44,6 +45,7 @@ impl EnemyBundle {
         texture: Handle<TextureAtlas>,
         enemy_type: EnemyType,
         size: Vec2,
+        slot: i32,
         position: Vec2,
         z_index: f32,
         walk_speed: f32,
@@ -64,6 +66,7 @@ impl EnemyBundle {
 
         EnemyBundle {
             tag: Enemy,
+            slot: Enemyslot(slot),
             size: EnemySize(size),
             direction_timer,
             stunned_timer,

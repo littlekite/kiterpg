@@ -52,3 +52,7 @@ pub enum EnemyDirection {
     Left,
     Right,
 }
+
+
+#[derive(Component, Default, Debug, Clone, Reflect)]
+pub struct Enemyslot(pub i32);

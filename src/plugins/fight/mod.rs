@@ -24,7 +24,7 @@ use crate::{
 
 pub mod systems;
 use self::components::Icon;
-use self::systems::{player_select_attack, update_icon_location};
+use self::systems::{player_select_attack, update_icon_location, attack_flow, spawn_player_attack, lock_in_attack, player_action_timing};
 use self::{
     systems::{textfun,spawn_player_attack_icons}
 };
@@ -125,6 +125,57 @@ impl WeaponBundle {
 #[derive(Component, Reflect)]
 pub struct WeaponIcon(pub i32);
 
+#[derive(PartialEq, Eq, Reflect)]
+pub enum WeaponAttackType {
+    Melee,
+    Range,
+}
+
+#[derive(Component, Reflect)]
+pub struct AttackAnimation {
+    pub starting_x: f32,
+    pub starting_y: f32,
+    pub ending_x: f32,
+    pub ending_y: f32,
+    pub max_weapon_rotation: f32,
+}
+#[derive(Reflect, PartialEq, Eq)]
+pub enum AttackStage {
+    Charge,
+    WalkUp,
+    Action,
+    CoolDown,
+}
+
+#[derive(Reflect, Copy, Clone, PartialEq, Eq, Debug)]
+pub enum ActionTiming {
+    NotEntered,
+    Early,
+    Critical,
+    Late,
+}
+pub struct Action {
+    //TODO action type
+    pub stage: AttackStage,
+    pub action_input: ActionTiming,
+}
+
+#[derive(Component)]
+pub struct Attack {
+    pub attacker: Entity,
+    pub target: Entity,
+    pub attack_type: WeaponAttackType,
+    pub current_stage: usize,
+    pub stages: Vec<(AttackStage, f32)>,
+    pub action: Action,
+    pub timer: Timer,
+}
+
+#[derive(Bundle)]
+pub struct AttackBundle {
+    attack: Attack,
+    animation: AttackAnimation,
+}
 
 
 impl Plugin for FightPlugin {
@@ -137,6 +188,20 @@ impl Plugin for FightPlugin {
         ).add_systems(
             (player_select_attack,update_icon_location)
                 .in_set(OnUpdate(CombatState::PlayerSelecting)),
+        ).add_system(
+            attack_flow
+                .in_set(OnUpdate(CombatState::PlayerAttacking)),
+        ).add_systems(
+            (
+                lock_in_attack,
+            )
+                .chain()
+                .in_schedule(OnExit(CombatState::PlayerSelecting)),
+        ).add_system(spawn_player_attack.in_schedule(OnEnter(CombatState::PlayerAttacking)))
+        .add_systems(
+            (player_action_timing, )
+                .chain()
+                .in_set(OnUpdate(CombatState::PlayerAttacking)),
         );
     }
 }

@@ -1,3 +1,5 @@
+use crate::plugins::{fight::{Weapon, AttackAnimation, Attack, WeaponAttackType, AttackStage}, player::components::Player};
+
 // Copyright (c) 2023 Paul
 //
 // This software is released under the MIT License.
@@ -7,10 +9,11 @@ use super::{
     events::AnimationStartEvent,
 };
 use bevy::{
-    prelude::{Entity, EventReader, Query, Res},
+    prelude::{Entity, EventReader, Query, Res, Without, Children, Transform, With, Quat},
     sprite::TextureAtlasSprite,
     time::Time,
 };
+use bevy_easings::Lerp;
 use std::time::Duration;
 
 pub fn update_active_animation_clips(
@@ -69,5 +72,48 @@ pub fn handle_animation_start_event(
                 }
             };
         }
+    }
+}
+
+
+pub fn animate_melee(
+    mut attacker: Query<(&mut Transform), (With<Player>,Without<Weapon>)>,
+    attack: Query<(&Attack, &AttackAnimation)>,
+    mut weapon: Query<&mut Transform, With<Weapon>>,
+){
+    if let Ok((attack, animation)) = attack.get_single() {
+        if !matches!(attack.attack_type, WeaponAttackType::Melee) {
+            return;
+        }
+        let (mut transform) = attacker
+        .get_mut(attack.attacker)
+        .expect("Attacker has no weapon");
+        match attack.stages[attack.current_stage].0 {
+            AttackStage::WalkUp => {
+                transform.translation.x =
+                    (animation.starting_x).lerp(&animation.ending_x, &attack.timer.percent());
+                transform.translation.y =
+                    (animation.starting_y).lerp(&animation.ending_y, &attack.timer.percent());
+               
+            }
+            AttackStage::Action => {
+                transform.translation.x = animation.ending_x;
+                transform.translation.y = animation.ending_y;
+                if attack.timer.percent() < 0.5 {
+                    
+                } else {
+                    
+                }
+            }
+            AttackStage::CoolDown => {
+                transform.translation.x =
+                    (animation.ending_x).lerp(&animation.starting_x, &attack.timer.percent());
+                transform.translation.y =
+                    (animation.ending_y).lerp(&animation.starting_y, &attack.timer.percent());
+                
+            }
+            _ => {}
+        }
+
     }
 }

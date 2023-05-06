@@ -1,5 +1,6 @@
 
-use bevy::{prelude::States, reflect::Reflect};
+use bevy::{prelude::{States, Component}, reflect::Reflect};
+use serde::{Serialize, Deserialize};
 
 #[derive(States, PartialEq, Eq, Debug, Default, Clone, Hash, Reflect)]
 pub enum CombatState {
@@ -11,3 +12,4 @@ pub enum CombatState {
     EnemyDying,
     PlayerWins,
 }
+

@@ -18,11 +18,13 @@ mod systems;
 pub mod components;
 pub mod states;
 
+use self::components::PlayerAttack;
 use self::{
     states::CombatState,
     systems::{start_combat,spawn_combat,test_combat_end,transition_to_overworld,test_combat}
 };
 
+use super::enemy::components::Enemyslot;
 use super::fight::{FightPlugin, SelectionIcon, CurrentSelectedMenuItem};
 use super::player::systems::animation::player_animation;
 use super::spawner::systems::spawn::spawner_spawn_enemies;
@@ -38,6 +40,8 @@ impl Plugin for CombatPlugin {
             .add_plugin(RonAssetPlugin::<CombatDescriptor>::new(&["combat.ron"]))
             .register_type::<CurrentSelectedMenuItem>()
             .register_type::<SelectionIcon>()
+            .register_type::<PlayerAttack>()
+            .register_type::<Enemyslot>()
             .add_system(start_combat.in_set(OnUpdate(OverworldState::CombatStarting)))
             .add_system(test_combat_end)
             .add_system(transition_to_overworld)

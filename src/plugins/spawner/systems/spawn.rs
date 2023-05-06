@@ -51,6 +51,7 @@ pub fn spawner_spawn_enemies(
                         game_atlases.enemy.clone(),
                         EnemyType::Blob,
                         Vec2 { x: 15.0, y: 16.0 },
+                        enemy_count as i32,
                         Vec2::new(60.0 + 20.0 * enemy_count as f32, 110.0 + 20.0 * enemy_count as f32),
                         14.0,
                         20.0,
