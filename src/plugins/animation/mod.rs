@@ -41,6 +41,9 @@ impl Plugin for AnimationPlugin {
         ).add_system(
             animate_melee
                 .in_set(OnUpdate(CombatState::PlayerAttacking)),
+        ).add_system(
+            animate_melee
+                .in_set(OnUpdate(CombatState::EnemyAttacking)),
         );
      
     }

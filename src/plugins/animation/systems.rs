@@ -77,7 +77,8 @@ pub fn handle_animation_start_event(
 
 
 pub fn animate_melee(
-    mut attacker: Query<(&mut Transform), (With<Player>,Without<Weapon>)>,
+    //mut attacker: Query<(&mut Transform), (With<Player>,Without<Weapon>)>,
+    mut attacker: Query<(&mut Transform), Without<Weapon>>,
     attack: Query<(&Attack, &AttackAnimation)>,
     mut weapon: Query<&mut Transform, With<Weapon>>,
 ){

@@ -261,7 +261,22 @@ pub fn player_action_timing(
     }
 }
 
+pub fn spawn_enemy_attack(
+    mut commands: Commands,
+    player: Query<Entity, With<Player>>,
+    //Without dying enemies
+    enemy: Query<(Entity, &Transform, &Enemy, &Enemyslot), (Without<Player>)>,
+) {
+    let (enemy, transform, _, slo) = enemy
+        .iter()
+        .min_by_key(|(_, _, enemy,enemy_slo)| enemy_slo.0)
+        .expect("No enemy to attack");
 
+    let player = player.get_single().expect("One player only!");
+    let mut attack = Weapon::BasicSpear.get_attack_bundle(false, enemy, player, 0);
+    attack.animation.starting_x = transform.translation.x;
+    commands.spawn(attack);
+}
 
 pub fn spawn_player_attack(
     mut commands: Commands,

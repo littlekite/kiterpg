@@ -24,7 +24,7 @@ use crate::{
 
 pub mod systems;
 use self::components::Icon;
-use self::systems::{player_select_attack, update_icon_location, attack_flow, spawn_player_attack, lock_in_attack, player_action_timing};
+use self::systems::{player_select_attack, update_icon_location, attack_flow, spawn_player_attack, lock_in_attack, player_action_timing, spawn_enemy_attack};
 use self::{
     systems::{textfun,spawn_player_attack_icons}
 };
@@ -177,10 +177,18 @@ pub struct AttackBundle {
     animation: AttackAnimation,
 }
 
+pub fn despawn_with<T: Component>(mut commands: Commands, matches: Query<Entity, With<T>>) {
+    for entity in &matches {
+        commands.entity(entity).despawn_recursive();
+    }
+}
+
+
 
 impl Plugin for FightPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system(
+        app.add_system(despawn_with::<Attack>.in_schedule(OnExit(CombatState::PlayerAttacking)))
+        .add_system(
             spawn_player_attack_icons.in_schedule(OnEnter(CombatState::PlayerSelecting)),
         ).add_systems(
             (textfun,).in_set(OnUpdate(AppState::InGame))
@@ -191,6 +199,9 @@ impl Plugin for FightPlugin {
         ).add_system(
             attack_flow
                 .in_set(OnUpdate(CombatState::PlayerAttacking)),
+        ).add_system(
+            attack_flow
+                .in_set(OnUpdate(CombatState::EnemyAttacking)),
         ).add_systems(
             (
                 lock_in_attack,
@@ -198,6 +209,7 @@ impl Plugin for FightPlugin {
                 .chain()
                 .in_schedule(OnExit(CombatState::PlayerSelecting)),
         ).add_system(spawn_player_attack.in_schedule(OnEnter(CombatState::PlayerAttacking)))
+         .add_system(spawn_enemy_attack.in_schedule(OnEnter(CombatState::EnemyAttacking)))
         .add_systems(
             (player_action_timing, )
                 .chain()
