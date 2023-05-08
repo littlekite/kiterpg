@@ -131,8 +131,11 @@ pub fn attack_flow(
             attack.current_stage += 1;
             if attack.current_stage >= attack.stages.len() {
                 attack.current_stage = attack.stages.len() - 1;
-
-
+                match state.0 {
+                    CombatState::PlayerAttacking => next_state.set(CombatState::EnemyAttacking),
+                    CombatState::EnemyAttacking => next_state.set(CombatState::PlayerSelecting),
+                    _ => unreachable!("Can't finish attack in this state"),
+                }
                 return;
             }
 
