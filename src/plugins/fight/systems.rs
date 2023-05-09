@@ -182,8 +182,8 @@ impl Weapon {
             AttackAnimation {
                 starting_x: 112.,
                 starting_y: 100.,
-                ending_x: -1.9,
-                ending_y: 110.0,
+                ending_x: 154.0,
+                ending_y: 53.,
                 max_weapon_rotation: 6.0,
             }
         };
