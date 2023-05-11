@@ -188,6 +188,7 @@ pub fn despawn_with<T: Component>(mut commands: Commands, matches: Query<Entity,
 impl Plugin for FightPlugin {
     fn build(&self, app: &mut App) {
         app.add_system(despawn_with::<Attack>.in_schedule(OnExit(CombatState::PlayerAttacking)))
+        .add_system(despawn_with::<Attack>.in_schedule(OnExit(CombatState::EnemyAttacking)))
         .add_system(
             spawn_player_attack_icons.in_schedule(OnEnter(CombatState::PlayerSelecting)),
         ).add_systems(
