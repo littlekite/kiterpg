@@ -113,6 +113,7 @@ pub fn attack_flow(
     time: Res<Time>,
     state: Res<State<CombatState>>,
     mut next_state: ResMut<NextState<CombatState>>,
+    mut player_state:ResMut<NextState<PlayerState>>,
     player: Query<(Entity), (With<Player>,Without<Enemy>)>,
     enemy: Query<(Entity), (With<Enemy>, Without<Player>)>,    
 ){
@@ -132,8 +133,19 @@ pub fn attack_flow(
             if attack.current_stage >= attack.stages.len() {
                 attack.current_stage = attack.stages.len() - 1;
                 match state.0 {
-                    CombatState::PlayerAttacking => next_state.set(CombatState::EnemyAttacking),
-                    CombatState::EnemyAttacking => next_state.set(CombatState::PlayerSelecting),
+                    CombatState::PlayerAttacking => 
+                    {
+                        next_state.set(CombatState::EnemyAttacking);
+                        println!("do enmey deamg animation")
+                    },
+                    CombatState::EnemyAttacking => 
+                    {
+                        next_state.set(CombatState::PlayerSelecting);
+                        //将player状态设置为被击中
+                        player_state.set(PlayerState::OnFight);    
+                        println!("do player deamg animation")
+                        
+                    },
                     _ => unreachable!("Can't finish attack in this state"),
                 }
                 return;

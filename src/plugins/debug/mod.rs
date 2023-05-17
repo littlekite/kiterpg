@@ -30,7 +30,8 @@ impl Plugin for DebugPlugin {
             .add_plugin(StateInspectorPlugin::<AppState>::default())
             .add_plugin(StateInspectorPlugin::<GameState>::default())
             .add_plugin(StateInspectorPlugin::<OverworldState>::default())
-            .add_plugin(StateInspectorPlugin::<CombatState>::default());
+            .add_plugin(StateInspectorPlugin::<CombatState>::default())
+            .add_plugin(StateInspectorPlugin::<PlayerState>::default());
     }
 }
 

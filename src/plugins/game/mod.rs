@@ -34,6 +34,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<GameState>()
         .add_state::<LevelState>()
+        .add_state::<PlayerState>()
         .add_plugin(DebugPlugin)
         .add_plugin(CameraPlugin)
         .add_plugin(TilemapPlugin)
